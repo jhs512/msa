@@ -1,8 +1,8 @@
 package com.ll.domain.post.post.controller;
 
-import com.ll.domain.member.member.entity.Member;
 import com.ll.domain.post.post.dto.PostDto;
 import com.ll.domain.post.post.dto.PostWithContentDto;
+import com.ll.domain.post.author.entity.Author;
 import com.ll.domain.post.post.entity.Post;
 import com.ll.domain.post.post.service.PostService;
 import com.ll.global.exceptions.ServiceException;
@@ -41,7 +41,7 @@ public class ApiV1PostController {
     @Transactional(readOnly = true)
     @Operation(summary = "통계정보")
     public PostStatisticsResBody statistics() {
-        Member actor = rq.getActor();
+        Author actor = rq.getAuthorActor();
 
         return new PostStatisticsResBody(
                 10,
@@ -58,7 +58,7 @@ public class ApiV1PostController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize
     ) {
-        Member actor = rq.getActor();
+        Author actor = rq.getAuthorActor();
 
         return new PageDto<>(
                 postService.findByAuthorPaged(actor, searchKeywordType, searchKeyword, page, pageSize)
@@ -88,7 +88,7 @@ public class ApiV1PostController {
         Post post = postService.findById(id).get();
 
         if (!post.isPublished()) {
-            Member actor = rq.getActor();
+            Author actor = rq.getAuthorActor();
 
             if (actor == null) {
                 throw new ServiceException("401-1", "로그인이 필요합니다.");
@@ -119,7 +119,7 @@ public class ApiV1PostController {
     public RsData<PostWithContentDto> write(
             @RequestBody @Valid PostWriteReqBody reqBody
     ) {
-        Member actor = rq.findByActor().get();
+        Author actor = rq.findByAuthorActor().get();
 
         Post post = postService.write(
                 actor,
@@ -156,7 +156,7 @@ public class ApiV1PostController {
             @PathVariable long id,
             @RequestBody @Valid PostModifyReqBody reqBody
     ) {
-        Member actor = rq.getActor();
+        Author actor = rq.getAuthorActor();
 
         Post post = postService.findById(id).get();
 
@@ -180,11 +180,11 @@ public class ApiV1PostController {
     public RsData<Void> delete(
             @PathVariable long id
     ) {
-        Member member = rq.getActor();
+        Author actor = rq.getAuthorActor();
 
         Post post = postService.findById(id).get();
 
-        post.checkActorCanDelete(member);
+        post.checkActorCanDelete(actor);
 
         postService.delete(post);
 

@@ -2,6 +2,8 @@ package com.ll.global.rq;
 
 import com.ll.domain.member.member.entity.Member;
 import com.ll.domain.member.member.service.MemberService;
+import com.ll.domain.post.author.entity.Author;
+import com.ll.domain.post.author.service.AuthorService;
 import com.ll.global.security.SecurityUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +28,8 @@ public class Rq {
     private final HttpServletRequest req;
     private final HttpServletResponse resp;
     private final MemberService memberService;
+    private final AuthorService authorService;
+    private Member _actor;
 
     public void setLogin(Member member) {
         UserDetails user = new SecurityUser(
@@ -44,8 +48,17 @@ public class Rq {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    public Author getAuthorActor() {
+        Member actor = getActor();
+        if (actor == null) return null;
+
+        return new Author(actor);
+    }
+
     public Member getActor() {
-        return Optional.ofNullable(
+        if (_actor != null) return _actor;
+
+        _actor = Optional.ofNullable(
                         SecurityContextHolder
                                 .getContext()
                                 .getAuthentication()
@@ -55,6 +68,8 @@ public class Rq {
                 .map(principal -> (SecurityUser) principal)
                 .map(securityUser -> new Member(securityUser.getId(), securityUser.getUsername()))
                 .orElse(null);
+
+        return _actor;
     }
 
     public void setCookie(String name, String value) {
@@ -107,6 +122,14 @@ public class Rq {
 
         if (actor == null) return Optional.empty();
 
-        return memberService.findById(actor.getId());
+        return Optional.ofNullable(memberService.getReferenceById(actor.getId()));
+    }
+
+    public Optional<Author> findByAuthorActor() {
+        Author author = getAuthorActor();
+
+        if (author == null) return Optional.empty();
+
+        return Optional.ofNullable(authorService.getReferenceById(author.getId()));
     }
 }

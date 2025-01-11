@@ -1,8 +1,8 @@
 package com.ll.domain.post.comment.controller;
 
-import com.ll.domain.member.member.entity.Member;
 import com.ll.domain.post.comment.dto.PostCommentDto;
 import com.ll.domain.post.comment.entity.PostComment;
+import com.ll.domain.post.author.entity.Author;
 import com.ll.domain.post.post.entity.Post;
 import com.ll.domain.post.post.service.PostService;
 import com.ll.global.exceptions.ServiceException;
@@ -55,7 +55,7 @@ public class ApiV1PostCommentController {
             @PathVariable long postId,
             @PathVariable long id
     ) {
-        Member actor = rq.getActor();
+        Author actor = rq.getAuthorActor();
 
         Post post = postService.findById(postId).orElseThrow(
                 () -> new ServiceException("404-1", "%d번 글은 존재하지 않습니다.".formatted(postId))
@@ -91,7 +91,7 @@ public class ApiV1PostCommentController {
             @PathVariable long id,
             @RequestBody @Valid PostCommentModifyReqBody reqBody
     ) {
-        Member actor = rq.getActor();
+        Author actor = rq.getAuthorActor();
 
         Post post = postService.findById(postId).orElseThrow(
                 () -> new ServiceException("404-1", "%d번 글은 존재하지 않습니다.".formatted(postId))
@@ -127,7 +127,7 @@ public class ApiV1PostCommentController {
             @PathVariable long postId,
             @RequestBody @Valid PostCommentWriteReqBody reqBody
     ) {
-        Member actor = rq.getActor();
+        Author actor = rq.getAuthorActor();
 
         Post post = postService.findById(postId).orElseThrow(
                 () -> new ServiceException("404-1", "%d번 글은 존재하지 않습니다.".formatted(postId))

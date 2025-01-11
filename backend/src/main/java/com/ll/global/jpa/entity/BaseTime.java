@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BaseTime extends BaseEntity {
     @CreatedDate
-    @Setter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PROTECTED)
     private LocalDateTime createDate;
 
     @LastModifiedDate
-    @Setter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PROTECTED)
     private LocalDateTime modifyDate;
 }

@@ -41,8 +41,12 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
-    public Optional<Member> findById(long authorId) {
-        return memberRepository.findById(authorId);
+    public Member getReferenceById(long id) {
+        return memberRepository.getReferenceById(id);
+    }
+
+    public Optional<Member> findById(long id) {
+        return memberRepository.findById(id);
     }
 
     public Optional<Member> findByApiKey(String apiKey) {

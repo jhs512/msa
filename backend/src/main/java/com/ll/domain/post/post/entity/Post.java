@@ -1,6 +1,6 @@
 package com.ll.domain.post.post.entity;
 
-import com.ll.domain.member.member.entity.Member;
+import com.ll.domain.post.author.entity.Author;
 import com.ll.domain.post.comment.entity.PostComment;
 import com.ll.global.exceptions.ServiceException;
 import com.ll.global.jpa.entity.BaseTime;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class Post extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member author;
+    private Author author;
 
     @Column(length = 100)
     private String title;
@@ -35,7 +35,7 @@ public class Post extends BaseTime {
 
     private boolean listed;
 
-    public PostComment addComment(Member author, String content) {
+    public PostComment addComment(Author author, String content) {
         PostComment comment = PostComment.builder()
                 .post(this)
                 .author(author)
@@ -61,7 +61,7 @@ public class Post extends BaseTime {
         comments.remove(postComment);
     }
 
-    public void checkActorCanDelete(Member actor) {
+    public void checkActorCanDelete(Author actor) {
         if (actor == null) throw new ServiceException("401-1", "로그인 후 이용해주세요.");
 
         if (actor.isAdmin()) return;
@@ -71,7 +71,7 @@ public class Post extends BaseTime {
         throw new ServiceException("403-1", "작성자만 글을 삭제할 수 있습니다.");
     }
 
-    public void checkActorCanModify(Member actor) {
+    public void checkActorCanModify(Author actor) {
         if (actor == null) throw new ServiceException("401-1", "로그인 후 이용해주세요.");
 
         if (actor.equals(author)) return;
@@ -79,7 +79,7 @@ public class Post extends BaseTime {
         throw new ServiceException("403-1", "작성자만 글을 수정할 수 있습니다.");
     }
 
-    public void checkActorCanRead(Member actor) {
+    public void checkActorCanRead(Author actor) {
         if (actor == null) throw new ServiceException("401-1", "로그인 후 이용해주세요.");
 
         if (actor.isAdmin()) return;

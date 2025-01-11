@@ -1,6 +1,6 @@
 package com.ll.domain.post.post.service;
 
-import com.ll.domain.member.member.entity.Member;
+import com.ll.domain.post.author.entity.Author;
 import com.ll.domain.post.post.entity.Post;
 import com.ll.domain.post.post.repository.PostRepository;
 import com.ll.standard.search.SearchKeywordTypeV1;
@@ -23,7 +23,7 @@ public class PostService {
         return postRepository.count();
     }
 
-    public Post write(Member author, String title, String content, boolean published, boolean listed) {
+    public Post write(Author author, String title, String content, boolean published, boolean listed) {
         Post post = Post.builder()
                 .author(author)
                 .title(title)
@@ -88,14 +88,14 @@ public class PostService {
         };
     }
 
-    public Page<Post> findByAuthorPaged(Member author, int page, int pageSize) {
+    public Page<Post> findByAuthorPaged(Author author, int page, int pageSize) {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("id")));
 
         return postRepository.findByAuthor(author, pageRequest);
     }
 
     public Page<Post> findByAuthorPaged(
-            Member author,
+            Author author,
             SearchKeywordTypeV1 searchKeywordType,
             String searchKeyword,
             int page,

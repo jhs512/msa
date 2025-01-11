@@ -2,6 +2,7 @@ package com.ll.domain.post.post.controller;
 
 import com.ll.domain.member.member.entity.Member;
 import com.ll.domain.member.member.service.MemberService;
+import com.ll.domain.post.author.entity.Author;
 import com.ll.domain.post.post.entity.Post;
 import com.ll.domain.post.post.service.PostService;
 import com.ll.standard.search.SearchKeywordTypeV1;
@@ -86,8 +87,9 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("글 작성")
     void t3() throws Exception {
-        Member actor = memberService.findByUsername("user1").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user1").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
+        Author actor = new Author(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -131,8 +133,8 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("글 작성, with no input")
     void t4() throws Exception {
-        Member actor = memberService.findByUsername("user1").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user1").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -190,8 +192,8 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("글 수정")
     void t6() throws Exception {
-        Member actor = memberService.findByUsername("user1").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user1").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
 
         Post post = postService.findById(1).get();
 
@@ -235,8 +237,8 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("글 수정, with no input")
     void t7() throws Exception {
-        Member actor = memberService.findByUsername("user1").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user1").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -294,8 +296,8 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("글 수정, with no permission")
     void t9() throws Exception {
-        Member actor = memberService.findByUsername("user2").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user2").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -344,8 +346,8 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("글 삭제, with not exist post id")
     void t11() throws Exception {
-        Member actor = memberService.findByUsername("user1").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user1").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -380,8 +382,8 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("글 삭제, with no permission")
     void t13() throws Exception {
-        Member actor = memberService.findByUsername("user2").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user2").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -401,8 +403,8 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("비공개글 6번글 조회, with 작성자")
     void t14() throws Exception {
-        Member actor = memberService.findByUsername("user4").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user4").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -446,8 +448,8 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("비공개글 6번글 조회, with no permission")
     void t16() throws Exception {
-        Member actor = memberService.findByUsername("user1").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user1").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -581,8 +583,9 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("내글 다건 조회")
     void t20() throws Exception {
-        Member actor = memberService.findByUsername("user4").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user4").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
+        Author actor = new Author(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -623,8 +626,9 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("내글 다건 조회 with searchKeyword=발야구")
     void t21() throws Exception {
-        Member actor = memberService.findByUsername("user4").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user4").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
+        Author actor = new Author(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -665,8 +669,9 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("내글 다건 조회 with searchKeywordType=content&searchKeyword=18명")
     void t22() throws Exception {
-        Member actor = memberService.findByUsername("user4").get();
-        String actorAuthToken = memberService.genAuthToken(actor);
+        Member memberActor = memberService.findByUsername("user4").get();
+        String actorAuthToken = memberService.genAuthToken(memberActor);
+        Author actor = new Author(memberActor);
 
         ResultActions resultActions = mvc
                 .perform(

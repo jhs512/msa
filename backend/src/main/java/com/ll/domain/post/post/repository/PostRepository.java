@@ -1,6 +1,6 @@
 package com.ll.domain.post.post.repository;
 
-import com.ll.domain.member.member.entity.Member;
+import com.ll.domain.post.author.entity.Author;
 import com.ll.domain.post.post.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,9 +20,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findByListedAndContentLike(boolean listed, String contentLike, PageRequest pageRequest);
 
-    Page<Post> findByAuthor(Member author, PageRequest pageRequest);
+    Page<Post> findByAuthor(Author author, PageRequest pageRequest);
 
-    Page<Post> findByAuthorAndTitleLike(Member author, String titleLike, PageRequest pageRequest);
+    Page<Post> findByAuthorAndTitleLike(Author author, String titleLike, PageRequest pageRequest);
 
-    Page<Post> findByAuthorAndContentLike(Member author, String contentLike, PageRequest pageRequest);
+    Page<Post> findByAuthorAndContentLike(Author author, String contentLike, PageRequest pageRequest);
 }

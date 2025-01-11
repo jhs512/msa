@@ -2,6 +2,7 @@ package com.ll.global.initData;
 
 import com.ll.domain.member.member.entity.Member;
 import com.ll.domain.member.member.service.MemberService;
+import com.ll.domain.post.author.entity.Author;
 import com.ll.domain.post.post.entity.Post;
 import com.ll.domain.post.post.service.PostService;
 import com.ll.global.app.AppConfig;
@@ -65,27 +66,32 @@ public class BaseInitData {
         Member memberUser3 = memberService.findByUsername("user3").get();
         Member memberUser4 = memberService.findByUsername("user4").get();
 
+        Author authorUser1 = new Author(memberUser1);
+        Author authorUser2 = new Author(memberUser2);
+        Author authorUser3 = new Author(memberUser3);
+        Author authorUser4 = new Author(memberUser4);
+
         Post post1 = postService.write(
-                memberUser1,
+                authorUser1,
                 "축구 하실 분?",
                 "14시 까지 22명을 모아야 합니다.",
                 true,
                 true
         );
-        post1.addComment(memberUser2, "저요!");
-        post1.addComment(memberUser3, "저도 할래요.");
+        post1.addComment(authorUser2, "저요!");
+        post1.addComment(authorUser3, "저도 할래요.");
 
         Post post2 = postService.write(
-                memberUser1,
+                authorUser1,
                 "배구 하실 분?",
                 "15시 까지 12명을 모아야 합니다.",
                 true,
                 true
         );
-        post2.addComment(memberUser4, "저요!, 저 배구 잘합니다.");
+        post2.addComment(authorUser4, "저요!, 저 배구 잘합니다.");
 
         Post post3 = postService.write(
-                memberUser2,
+                authorUser2,
                 "농구 하실 분?",
                 "16시 까지 10명을 모아야 합니다.",
                 true,
@@ -93,7 +99,7 @@ public class BaseInitData {
         );
 
         Post post4 = postService.write(
-                memberUser3,
+                authorUser3,
                 "발야구 하실 분?",
                 "17시 까지 14명을 모아야 합니다.",
                 true,
@@ -101,7 +107,7 @@ public class BaseInitData {
         );
 
         Post post5 = postService.write(
-                memberUser4,
+                authorUser4,
                 "피구 하실 분?",
                 "18시 까지 18명을 모아야 합니다.",
                 true,
@@ -109,7 +115,7 @@ public class BaseInitData {
         );
 
         Post post6 = postService.write(
-                memberUser4,
+                authorUser4,
                 "발야구를 밤에 하실 분?",
                 "22시 까지 18명을 모아야 합니다.",
                 false,
@@ -117,7 +123,7 @@ public class BaseInitData {
         );
 
         Post post7 = postService.write(
-                memberUser4,
+                authorUser4,
                 "발야구를 새벽 1시에 하실 분?",
                 "새벽 1시 까지 17명을 모아야 합니다.",
                 true,
@@ -125,7 +131,7 @@ public class BaseInitData {
         );
 
         Post post8 = postService.write(
-                memberUser4,
+                authorUser4,
                 "발야구를 새벽 3시에 하실 분?",
                 "새벽 3시 까지 19명을 모아야 합니다.",
                 false,
