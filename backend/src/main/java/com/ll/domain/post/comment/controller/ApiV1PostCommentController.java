@@ -1,13 +1,14 @@
 package com.ll.domain.post.comment.controller;
 
+import com.ll.domain.post.author.entity.Author;
 import com.ll.domain.post.comment.dto.PostCommentDto;
 import com.ll.domain.post.comment.entity.PostComment;
-import com.ll.domain.post.author.entity.Author;
 import com.ll.domain.post.post.entity.Post;
 import com.ll.domain.post.post.service.PostService;
 import com.ll.global.exceptions.ServiceException;
 import com.ll.global.rq.Rq;
 import com.ll.global.rsData.RsData;
+import com.ll.global.serviceEvent.post.comment.PostCommentCreatedEvent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +28,7 @@ import java.util.List;
 @Tag(name = "ApiV1PostCommentController", description = "API 댓글 컨트롤러")
 @SecurityRequirement(name = "bearerAuth")
 public class ApiV1PostCommentController {
+    private final ApplicationEventPublisher eventPublisher;
     private final PostService postService;
     private final Rq rq;
 
@@ -139,6 +142,8 @@ public class ApiV1PostCommentController {
         );
 
         postService.flush();
+
+        eventPublisher.publishEvent(new PostCommentCreatedEvent(postComment));
 
         return new RsData<>(
                 "201-1",
