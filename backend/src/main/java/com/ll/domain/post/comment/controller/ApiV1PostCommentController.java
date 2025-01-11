@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +28,7 @@ import java.util.List;
 @Tag(name = "ApiV1PostCommentController", description = "API 댓글 컨트롤러")
 @SecurityRequirement(name = "bearerAuth")
 public class ApiV1PostCommentController {
-    private final ApplicationEventPublisher eventPublisher;
+    private final KafkaTemplate<Object, Object> template;
     private final PostService postService;
     private final Rq rq;
 
@@ -143,7 +143,7 @@ public class ApiV1PostCommentController {
 
         postService.flush();
 
-        eventPublisher.publishEvent(new PostCommentCreatedEvent(postComment));
+        template.send("service.post.comment.created", new PostCommentCreatedEvent(postComment));
 
         return new RsData<>(
                 "201-1",

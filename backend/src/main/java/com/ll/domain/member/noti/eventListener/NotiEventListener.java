@@ -5,8 +5,7 @@ import com.ll.domain.member.member.service.MemberService;
 import com.ll.domain.member.noti.service.NotiService;
 import com.ll.global.serviceEvent.post.comment.PostCommentCreatedEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +16,17 @@ public class NotiEventListener {
     private final MemberService memberService;
     private final NotiService notiService;
 
-    @EventListener
-    @Async
+    @KafkaListener(topics = "service.post.comment.created", groupId = "1")
     public void listen(PostCommentCreatedEvent event) {
         Member receiver = memberService.findById(event.getPostAuthorId()).get();
         Member occurredBy = memberService.findById(event.getPostCommentAuthorId()).get();
 
         notiService.send(receiver, occurredBy, event.getMsg());
+    }
+
+    @KafkaListener(topics = "service.post.comment.created-dlt", groupId = "1")
+    public void consumePostCommentCreatedEventDLT(byte[] in) {
+        String message = new String(in);
+        System.out.println("failed message: " + message);
     }
 }

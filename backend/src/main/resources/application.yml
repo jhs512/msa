@@ -27,6 +27,12 @@ spring:
         format_sql: true
         highlight_sql: true
         use_sql_comments: true
+  kafka:
+    bootstrap-servers: localhost:19092
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
 springdoc:
   default-produces-media-type: application/json;charset=UTF-8
 logging:
