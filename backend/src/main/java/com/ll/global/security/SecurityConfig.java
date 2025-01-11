@@ -13,6 +13,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomAuthorizationRequestResolver customAuthorizationRequestResolver;
     private final CustomAuthenticationFilter customAuthenticationFilter;
 
     @Bean
@@ -43,6 +45,17 @@ public class SecurityConfig {
                 .csrf(
                         csrf ->
                                 csrf.disable()
+                )
+                .oauth2Login(
+                        oauth2Login ->
+                                oauth2Login
+                                        .successHandler(customAuthenticationSuccessHandler)
+                                        .authorizationEndpoint(
+                                                authorizationEndpoint ->
+                                                        authorizationEndpoint
+                                                                .authorizationRequestResolver(customAuthorizationRequestResolver)
+
+                                        )
                 )
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(

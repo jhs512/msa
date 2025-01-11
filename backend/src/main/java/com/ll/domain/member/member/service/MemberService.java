@@ -21,6 +21,10 @@ public class MemberService {
     }
 
     public Member join(String username, String password, String nickname) {
+        return join(username, password, nickname, "");
+    }
+
+    public Member join(String username, String password, String nickname, String profileImgUrl) {
         memberRepository
                 .findByUsername(username)
                 .ifPresent(_ -> {
@@ -31,6 +35,7 @@ public class MemberService {
                 .username(username)
                 .password(password)
                 .nickname(nickname)
+                .profileImgUrl(profileImgUrl)
                 .apiKey(UUID.randomUUID().toString())
                 .build();
 
@@ -72,5 +77,17 @@ public class MemberService {
         Member member = new Member(id, username);
 
         return member;
+    }
+
+    public Member modifyOrJoin(String username, String nickname, String profileImgUrl) {
+        Optional<Member> memberOpt = memberRepository.findByUsername(username);
+
+        if (memberOpt.isPresent()) {
+            Member member = memberOpt.get();
+            member.modify(nickname, profileImgUrl);
+            return member;
+        }
+
+        return join(username, "", nickname, profileImgUrl);
     }
 }

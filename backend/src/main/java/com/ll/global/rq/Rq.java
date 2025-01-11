@@ -49,10 +49,9 @@ public class Rq {
     }
 
     public Author getAuthorActor() {
-        Member actor = getActor();
-        if (actor == null) return null;
+        if (getActor() == null) return null;
 
-        return new Author(actor);
+        return new Author(getActor());
     }
 
     public Member getActor() {
@@ -131,5 +130,20 @@ public class Rq {
         if (author == null) return Optional.empty();
 
         return Optional.ofNullable(authorService.getReferenceById(author.getId()));
+    }
+
+
+    public record AuthTokens(String apiKey, String accessToken) {
+    }
+
+    public AuthTokens makeAuthCookies(Member member) {
+        String accessToken = memberService.genAccessToken(member);
+
+        setHeader("Authorization", "Bearer " + member.getApiKey() + " " + accessToken);
+
+        setCookie("accessToken", accessToken);
+        setCookie("apiKey", member.getApiKey());
+
+        return new AuthTokens(member.getApiKey(), accessToken);
     }
 }
