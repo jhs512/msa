@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BaseInitData {
     private final MemberService memberService;
     private final PostService postService;
+
     @Autowired
     @Lazy
     private BaseInitData self;
